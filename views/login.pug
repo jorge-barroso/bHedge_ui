@@ -1,0 +1,47 @@
+extends layout
+
+block content
+      head
+        title= title
+ 
+      body
+       div.login-page
+        div.form
+            img.className#IdName(src="./images/DoraHacks.png" alt="Image Title"  width="100%" height="20%")
+            h1= title
+           
+
+        
+            p#current_value.blink_me
+           
+            form.login-form( method='POST' action='/data')
+            div.form-group
+                label(for='username') User name
+                input(type='text' id='email' placeholder='username' name='username')
+            div.form-group
+                label(for='password') Password
+                input(type='password' id='password' placeholder='password' name='password')
+            button(type='login') Log in 
+        script(src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous")
+        script(type='text/javascript').
+            const currentValue = $('#current_value')
+            console.log(currentValue)
+          
+
+            function BTC() {
+
+              // send a request to blockchain
+              $.get('https://blockchain.info/de/ticker', (body) => {
+              
+              // parse the json answer and get the current bitcoin value
+              
+                value = (parseInt(body.USD.buy, 10) + parseInt(body.USD.sell, 10)) / 2;
+
+              currentValue.text( "Live BTC Value: " + value + "$");
+              console.log("BTC actual value: " + value + " USD");
+              });
+            }
+            BTC();
+            setInterval(function(){ 
+              BTC();   
+            }, 1000);

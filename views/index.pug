@@ -1,0 +1,65 @@
+extends layout
+
+block content
+  head
+    title= title
+    
+  body
+    div.top
+    
+      h2(style="float: left;display: block;color: #f2f2f2;text-align: center;padding: 14px 16px;text-decoration: none;") #{walletAmount}
+     
+      h2(style="float: left;display: block;color: #f2f2f2;text-align: center;padding: 14px 16px;text-decoration: none;") #{totalTraded}
+     
+      h2(style="float: left;display: block;color: #f2f2f2;text-align: center;padding: 14px 16px;text-decoration: none;") #{walletID}
+
+    div.data-page
+        div.formdata
+          img.className#IdName(src="./images/DoraHacks.png" alt="Image Title"  width="270")
+          h1= title
+          p#current_value.blink_me
+          p Welcome to #{title}!
+          
+          form(name="sellBuyForm", method="post")
+              div.form-group
+                  span.label Sell price USD
+                  input(type="text", name="USD")
+                  span.label BTC
+                  input(type="text", name="BTC")
+                  span.label %
+                  input(type="text", name="sellPercentage")      
+              div.form-group
+                  span.label Buy price USD
+                    input(type="text", name="USD")
+                    span.label BTC
+                    input(type="text", name="BTC")
+                    span.label %
+                    input(type="text", name="BuyPercentage")      
+              div.form-group
+                  button(type="submit") Send
+
+        script(src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous")
+        script(type='text/javascript').
+            const currentValue = $('#current_value')
+            console.log(currentValue)
+          
+
+            function BTC() {
+
+              // send a request to blockchain
+              $.get('https://blockchain.info/de/ticker', (body) => {
+             
+              // parse the json answer and get the current bitcoin value
+              
+                value = (parseInt(body.USD.buy, 10) + parseInt(body.USD.sell, 10)) / 2;
+
+              currentValue.text( "Live BTC Value: " + value + "$");
+              console.log("BTC actual value: " + value + " USD");
+              });
+            }
+            BTC();
+            setInterval(function(){ 
+              BTC();   
+            }, 1000);
+          
+      
